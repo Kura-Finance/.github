@@ -60,7 +60,9 @@ Kura was a consumer fintech super app built around one idea: **you keep custody 
 | **Platforms** | iOS & Android app, web app, internal ops console, marketing site |
 | **Codebase** | ≈ 148K lines of TypeScript across 5 repositories |
 | **Users in KYC** | 249 onboarded · 68 approved · 18 funded |
-| **Gross deposits** | ≈ US$34K across USD, EUR, MXN and GBP |
+| **Gross deposits** | ≈ US$34K across USD, EUR, MXN and GBP · ≈ US$18.3K (54%) refunded |
+| **Revenue** | 381.32 USDC in ramp fees · US$0 from subscriptions |
+| **Where users came from** | Southeast Asia 46% · Latin America 18% · Africa 17% · Europe 12% · US 1% |
 | **Fiat coverage** | US (ACH/wire), EU (SEPA), UK (Faster Payments), Mexico (SPEI), Brazil (PIX) |
 
 ### 2. Problem
@@ -110,6 +112,33 @@ All revenue flowed into one idempotent ledger (`PlatformRecord`) that fed an inv
 
 \* October sign-ups came after the shutdown notice.
 
+**Users by region** (country of residence; 94 users who never started KYC have no country on file)
+
+| Region | All users with a country (155) | Approved users (68) |
+|---|---|---|
+| Southeast Asia | 71 (45.8%) | 27 (39.7%) |
+| Latin America | 28 (18.1%) | 10 (14.7%) |
+| Africa | 27 (17.4%) | 13 (19.1%) |
+| Europe | 18 (11.6%) | 11 (16.2%) |
+| Other Asia | 7 (4.5%) | 4 (5.9%) |
+| North America | 3 (1.9%) | 2 (2.9%) |
+| Oceania | 1 (0.6%) | 0 |
+| Unknown | — | 1 (1.5%) |
+
+| Country | All users (% of 155) | Approved (% of 68) |
+|---|---|---|
+| Indonesia | 36 (23.2%) | 12 (17.6%) |
+| Philippines | 30 (19.4%) | 13 (19.1%) |
+| Nigeria | 13 (8.4%) | 6 (8.8%) |
+| Egypt | 7 (4.5%) | 5 (7.4%) |
+| Mexico | 7 (4.5%) | 1 (1.5%) |
+| Brazil | 7 (4.5%) | 2 (2.9%) |
+| Chile | 6 (3.9%) | 2 (2.9%) |
+| South Africa | 5 (3.2%) | 2 (2.9%) |
+| India · Spain · Colombia · Hong Kong | 3 each (1.9%) | 2 each (2.9%) |
+| United States | 2 (1.3%) | 1 (1.5%) |
+| 26 other countries | 1–2 each | 0–1 each |
+
 **Approved payment rails** (users): US 78 · EU/SEPA 78 · UK Faster Payments 44 · Mexico SPEI 27 · Brazil PIX 25 (PIX payouts 25, PIX deposits 3)
 
 **Deposits (virtual bank accounts)**
@@ -134,7 +163,30 @@ Deposit lifecycle events: 54 converted and paid out to wallets · 21 held for re
 
 **Payouts and crypto deposits**: 13 payout/deposit addresses; 6 completed transactions totaling 67.66 USDT + 11.50 USDC from 3 users.
 
-**Ramp unit economics**: wire-return fees on returned and refunded deposits exceeded the 0.25% ramp margin. **Net fiat-ramp revenue was zero or negative.**
+**Refunds** (deposits returned to the sender)
+
+| Currency | Refunded | Share of gross deposits |
+|---|---|---|
+| USD | 17,123.00 | 63% |
+| EUR | 904.64 (≈ US$1.0K) | 21% |
+| MXN | 4,400.00 (≈ US$0.2K) | 12% |
+| GBP | 5.00 | 2% |
+| **Total** | **≈ US$18.3K** | **≈ 54%** |
+
+21 deposits were refunded; refunds still in flight at the time of the snapshot are not counted separately because they overlap with the completed ones. Net deposits kept on the platform: **≈ US$15.6K**.
+
+**Revenue**
+
+| Source | Amount |
+|---|---|
+| Fiat-ramp fees (on 54 converted deposits) | **381.32 USDC** |
+| Subscriptions (Stripe, live mode) | **US$0**: 3 Pro monthly subscriptions, all invoiced at $0 (full discount or trial), all later canceled; no charges, refunds or disputes |
+| Swap / Earn fees (LI.FI, Morpho) | Not measured in this report |
+
+**Expenses**
+
+- **Wire-return fees** on refunded deposits exceeded the 381.32 USDC of ramp fees. **Net fiat-ramp revenue was negative.**
+- Fixed monthly fees for each open virtual account, plus cloud hosting (Google Cloud Run and Cloud SQL) and third-party API subscriptions. These are not itemized in this report.
 
 **Risk**: one fraud incident (≈ 992.5 USDC, 27 Jul 2026), traced on-chain and remediated. It led to the recall, suspension and fraud-rate monitoring tooling described below.
 
@@ -201,10 +253,12 @@ flowchart LR
 ### 8. Why it stopped — lessons learned
 
 1. **Too broad, too early.** Wallet, card, stocks, DeFi, aggregation and business treasuries all shipped before a single wedge found product-market fit. The card alone went through three partner approaches without launching.
-2. **The ramp margin could not absorb returns.** A 0.25% margin on ≈ US$34K of gross deposits is at most ≈ US$85. Wire-return fees on returned and refunded deposits (21 refunded, 18 in flight) **wiped out all fiat-ramp revenue**. A thin percentage margin needs either volume or fee pass-through for returns; Kura had neither.
+2. **The ramp margin could not absorb returns.** Ramp fees earned 381.32 USDC on ≈ US$34K of gross deposits, but ≈ 54% of that money was sent back, and the wire-return fees on those refunds **wiped out all fiat-ramp revenue**. A thin percentage fee needs either volume or pass-through of return costs; Kura had neither.
 3. **Regulated money movement is an operations business.** KYC rejections (64 of 249), fraud-rate thresholds, recalls, refunds and per-account fees demand dedicated compliance capacity that a solo founder cannot sustain next to engineering.
 4. **Activation is the real funnel.** 249 KYC starts → 68 approved → 18 funded. Onboarding friction, not features, was the constraint.
-5. **What worked:** shipping speed (519 production deploys), a security architecture that holds up to scrutiny, and a clean, documented codebase that others can fork.
+5. **The users were not the ones we designed for.** The product was built for US-style multi-asset users, but 81% of users came from Southeast Asia, Latin America and Africa, looking for USD and EUR receiving accounts. Only 2 were in the US. Cross-border wires into those accounts are the likely cause of the high refund rate.
+6. **Subscriptions were never validated.** No one paid for Pro or Ultimate; the 3 Pro subscriptions were all invoiced at $0.
+7. **What worked:** shipping speed (519 production deploys), a security architecture that holds up to scrutiny, and a clean, documented codebase that others can fork.
 
 ### 9. Repositories
 
@@ -278,7 +332,9 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 | **平台** | iOS 和 Android App、Web App、內部營運後台、官網 |
 | **程式碼** | 5 個 repo，約 14.8 萬行 TypeScript |
 | **KYC 用戶** | 249 位進入 · 68 位通過 · 18 位實際入金 |
-| **入金總額（gross）** | 約 US$34K，涵蓋 USD、EUR、MXN、GBP |
+| **入金總額（gross）** | 約 US$34K，涵蓋 USD、EUR、MXN、GBP · 其中約 US$18.3K（54%）退款 |
+| **收入** | 出入金手續費 381.32 USDC · 訂閱收入 US$0 |
+| **用戶來源** | 東南亞 46% · 拉丁美洲 18% · 非洲 17% · 歐洲 12% · 美國 1% |
 | **法幣覆蓋** | 美國（ACH／電匯）、歐盟（SEPA）、英國（Faster Payments）、墨西哥（SPEI）、巴西（PIX） |
 
 ### 2. 問題
@@ -328,6 +384,33 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 
 \* 10 月的註冊發生在停運公告之後。
 
+**用戶地區分布**（以居住國計；從未開始 KYC 的 94 位用戶沒有國家資料）
+
+| 地區 | 有國家資料的用戶（155） | 通過 KYC 的用戶（68） |
+|---|---|---|
+| 東南亞 | 71（45.8%） | 27（39.7%） |
+| 拉丁美洲 | 28（18.1%） | 10（14.7%） |
+| 非洲 | 27（17.4%） | 13（19.1%） |
+| 歐洲 | 18（11.6%） | 11（16.2%） |
+| 其他亞洲 | 7（4.5%） | 4（5.9%） |
+| 北美 | 3（1.9%） | 2（2.9%） |
+| 大洋洲 | 1（0.6%） | 0 |
+| 不明 | — | 1（1.5%） |
+
+| 國家 | 全部用戶（佔 155 的 %） | 通過 KYC（佔 68 的 %） |
+|---|---|---|
+| 印尼 | 36（23.2%） | 12（17.6%） |
+| 菲律賓 | 30（19.4%） | 13（19.1%） |
+| 奈及利亞 | 13（8.4%） | 6（8.8%） |
+| 埃及 | 7（4.5%） | 5（7.4%） |
+| 墨西哥 | 7（4.5%） | 1（1.5%） |
+| 巴西 | 7（4.5%） | 2（2.9%） |
+| 智利 | 6（3.9%） | 2（2.9%） |
+| 南非 | 5（3.2%） | 2（2.9%） |
+| 印度 · 西班牙 · 哥倫比亞 · 香港 | 各 3（1.9%） | 各 2（2.9%） |
+| 美國 | 2（1.3%） | 1（1.5%） |
+| 其他 26 國 | 各 1–2 | 各 0–1 |
+
 **已核准的支付軌道**（人數）：美國 78 · 歐盟 SEPA 78 · 英國 Faster Payments 44 · 墨西哥 SPEI 27 · 巴西 PIX 25（PIX 出金 25、PIX 入金 3）
 
 **入金（虛擬銀行帳戶）**
@@ -352,7 +435,30 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 
 **出金與加密貨幣入金**：13 個出金／入金地址；6 筆交易完成，合計 67.66 USDT + 11.50 USDC，來自 3 位用戶。
 
-**出入金單位經濟**：退回和退款入金產生的電匯退件費超過了 0.25% 的出入金利潤，**出入金淨營收為零或負數**。
+**退款**（退回給匯款人的入金）
+
+| 幣別 | 已退款 | 佔該幣別入金比例 |
+|---|---|---|
+| USD | 17,123.00 | 63% |
+| EUR | 904.64（約 US$1.0K） | 21% |
+| MXN | 4,400.00（約 US$0.2K） | 12% |
+| GBP | 5.00 | 2% |
+| **合計** | **約 US$18.3K** | **約 54%** |
+
+共 21 筆入金被退款；資料擷取當下仍在處理中的退款和已完成的部分重疊，所以不另外計算。留在平台上的淨入金：**約 US$15.6K**。
+
+**收入**
+
+| 來源 | 金額 |
+|---|---|
+| 出入金手續費（54 筆已換匯的入金） | **381.32 USDC** |
+| 訂閱（Stripe，live 模式） | **US$0**：3 筆 Pro 月訂閱，發票金額全是 $0（全額折扣或試用），之後全部取消；沒有任何扣款、退款或爭議款 |
+| Swap／Earn 手續費（LI.FI、Morpho） | 本報告未統計 |
+
+**支出**
+
+- 退款入金產生的**電匯退件費（wire return fee）超過了 381.32 USDC 的出入金手續費收入**，**出入金淨營收為負數**。
+- 每個開立中的虛擬帳戶都有固定月費，另有雲端主機（Google Cloud Run、Cloud SQL）和第三方 API 訂閱費用。這些在本報告中沒有逐項列出。
 
 **風險**：發生過一次詐騙事件（約 992.5 USDC，2026-07-27），已完成鏈上追查和處理，之後建置了下方所列的追回、停權和詐騙率監控工具。
 
@@ -399,10 +505,12 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 ### 8. 為什麼結束：學到的事
 
 1. **太廣、太早。** 錢包、卡片、美股、DeFi、帳戶聚合、企業金庫全部上線，卻沒有一個切入點先找到 product-market fit。光是卡片就換過三種合作方案，最後還是沒推出。
-2. **出入金的利潤扛不住退件。** 約 US$34K 的 gross 入金，以 0.25% 計算最多只賺約 US$85。退回和退款的入金（已退款 21 筆、處理中 18 筆）產生的電匯退件費（wire return fee）**吃掉了全部的出入金營收**。薄利的百分比抽成，要嘛靠量撐，要嘛得把退件費轉嫁給用戶，Kura 兩者都沒有。
+2. **出入金的利潤扛不住退件。** 約 US$34K 的 gross 入金賺到 381.32 USDC 手續費，但其中約 54% 的錢被退回，這些退款產生的電匯退件費（wire return fee）**吃掉了全部的出入金營收**。薄利的百分比抽成，要嘛靠量撐，要嘛得把退件成本轉嫁給用戶，Kura 兩者都沒有。
 3. **受監管的金流其實是營運生意。** KYC 被拒（249 位中 64 位）、詐騙率門檻、追回款項、退款、每個帳戶的月費，都需要專職的合規人力，一個人同時寫程式撐不住。
 4. **真正的漏斗是啟用率。** 249 人開始 KYC → 68 人通過 → 18 人實際入金。瓶頸是開戶摩擦，不是功能不夠。
-5. **做對的事：** 出貨速度（519 次正式部署）、經得起檢視的安全架構，以及文件齊全、別人可以直接 fork 的程式碼。
+5. **實際用戶不是產品設計的對象。** 產品是照美國式多資產用戶設計的，但 81% 的用戶來自東南亞、拉丁美洲和非洲，要的是 USD 和 EUR 收款帳戶，美國用戶只有 2 位。匯進這些帳戶的跨境電匯，很可能就是退款率居高不下的原因。
+6. **訂閱模式從未被驗證。** 沒有人為 Pro 或 Ultimate 付過錢；3 筆 Pro 訂閱的發票金額全是 $0。
+7. **做對的事：** 出貨速度（519 次正式部署）、經得起檢視的安全架構，以及文件齊全、別人可以直接 fork 的程式碼。
 
 ### 9. Repositories
 
