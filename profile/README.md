@@ -137,7 +137,7 @@ All revenue flowed into one idempotent ledger (`PlatformRecord`) that fed an inv
 | South Africa | 5 (3.2%) | 2 (2.9%) |
 | India · Spain · Colombia · Hong Kong | 3 each (1.9%) | 2 each (2.9%) |
 | United States | 2 (1.3%) | 1 (1.5%) |
-| 26 other countries | 1–2 each | 0–1 each |
+| 23 other countries and territories | 1–2 each | 0–1 each |
 
 **Approved payment rails** (users): US 78 · EU/SEPA 78 · UK Faster Payments 44 · Mexico SPEI 27 · Brazil PIX 25 (PIX payouts 25, PIX deposits 3)
 
@@ -414,7 +414,7 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 | 南非 | 5（3.2%） | 2（2.9%） |
 | 印度 · 西班牙 · 哥倫比亞 · 香港 | 各 3（1.9%） | 各 2（2.9%） |
 | 美國 | 2（1.3%） | 1（1.5%） |
-| 其他 26 國 | 各 1–2 | 各 0–1 |
+| 其他 23 個國家和地區 | 各 1–2 | 各 0–1 |
 
 **已核准的支付軌道**（人數）：美國 78 · 歐盟 SEPA 78 · 英國 Faster Payments 44 · 墨西哥 SPEI 27 · 巴西 PIX 25（PIX 出金 25、PIX 入金 3）
 
