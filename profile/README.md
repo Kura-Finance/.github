@@ -20,7 +20,7 @@
 **English** · [中文](#中文)
 
 > [!NOTE]
-> **Kura Finance LLC has wound down operations (2026).** The product code is published under the MIT license (© Prism Capital LLC) as a reference implementation. Existing users can export their wallet keys through [Privy](https://home.privy.io). Forks need their own banking, brokerage and data-provider contracts, licenses and KYC programs.
+> **Kura Finance LLC has wound down operations (2026).** The product code is published under the MIT license (© Prism Capital LLC) as a reference implementation. Existing users can export their wallet keys through [Privy](https://home.privy.io). Forks need their own Bridge, Dinari and Plaid contracts, licenses and KYC programs.
 
 ---
 
@@ -88,7 +88,7 @@ People who hold both traditional and on-chain assets juggle a bank app, a crypto
 | Product | What it does |
 |---|---|
 | [**Kura Wallet**](https://kura-finance.com/kura-wallet) | Safe smart account on Base (ERC-4337). Log in with Privy; pay gas in USDC via Pimlico; swap and bridge via LI.FI; works as a WalletConnect wallet for dApps |
-| [**Financial Account**](https://kura-finance.com/financial-account) | Personal virtual bank accounts (USD, EUR, GBP, MXN, BRL) through a regulated fiat partner. Deposits auto-convert to stablecoins; payouts go back to bank accounts |
+| [**Financial Account**](https://kura-finance.com/financial-account) | Personal virtual bank accounts (USD, EUR, GBP, MXN, BRL) through [Bridge](https://bridge.xyz). Deposits auto-convert to stablecoins; payouts go back to bank accounts |
 | [**RWA & US Stocks**](https://kura-finance.com/us-stocks) | Tokenized US equities (Dinari dShares) settled on Base, with managed KYC |
 | [**Earn / Borrow**](https://kura-finance.com/earn) | Morpho vaults and markets on Base |
 | [**TrackFi**](https://kura-finance.com/trackfi) | Net-worth dashboard across banks and brokers (Plaid), 8 centralized exchanges and DeFi positions. End-to-end encrypted with passkeys |
@@ -100,7 +100,7 @@ People who hold both traditional and on-chain assets juggle a bank app, a crypto
 | Stream | Mechanism |
 |---|---|
 | Subscriptions (Stripe) | **Basic** free · **Pro** $12.99/mo or $129.99/yr · **Ultimate** $29.99/mo or $299.99/yr |
-| On/off-ramp | Kura margin of 0.25% on top of the partner's wholesale cost, computed server-side |
+| On/off-ramp | Kura margin of 0.25% on top of Bridge's wholesale cost, computed server-side |
 | Swaps & bridges | LI.FI integrator fee, 0.25% |
 | Earn | Morpho fee-wrapper vaults, 10% performance fee |
 | Referrals | Cashback program settled from ramp events |
@@ -230,7 +230,7 @@ flowchart LR
   end
   M & W & A --> API
   API --> DB
-  API --> Ramp[Fiat partner<br/>bank accounts ↔ stablecoin]
+  API --> Ramp[Bridge<br/>bank accounts ↔ stablecoin]
   API --> Plaid
   API --> Dinari
   API --> Stripe
@@ -250,8 +250,8 @@ flowchart LR
 **Engineering highlights**
 
 - **Zero-Access E2EE.** Each sync generates an AES-256-GCM session key, sealed to the user's X25519 public key (libsodium sealed box) and then zeroized. The private key is wrapped by a key derived from the passkey's **WebAuthn PRF** output, so the server cannot decrypt user financial data. It was rolled out in three migration phases, with a key-reset flow for lost passkeys.
-- **Fiat rails** (the largest domain, ~4.6K LOC): KYC with per-rail endorsements, virtual accounts, payout addresses, Tron USDT → Base USDC deposits, external bank accounts (US / IBAN / CLABE / PIX / GB), and funds recalls. Webhooks use RSA signature verification, a 10-minute replay window, fail-closed behavior and event deduplication. Every outbound request carries an idempotency key.
-- **Risk operations.** Fraud remediation (recalls, returns, account suspension), a monthly fraud-rate monitor against partner thresholds, and an inactive-account sweeper to avoid per-account fees.
+- **Bridge fiat rails** (the largest domain, ~4.6K LOC): KYC with per-rail endorsements, virtual accounts, payout addresses, Tron USDT → Base USDC deposits, external bank accounts (US / IBAN / CLABE / PIX / GB), and funds recalls. Webhooks use RSA signature verification, a 10-minute replay window, fail-closed behavior and event deduplication. Every outbound request carries an idempotency key.
+- **Risk operations.** Fraud remediation (recalls, returns, account suspension), a monthly fraud-rate monitor against Bridge's thresholds, and an inactive-account sweeper to avoid per-account fees.
 - **Modular monolith.** 15 feature-flagged domains; disabled domains skip env validation and unmount their routes. Tiered rate limits and per-plan sync quotas.
 
 ### 7. Timeline
@@ -285,7 +285,7 @@ flowchart LR
 
 | Repository | Description | License |
 |---|---|---|
-| [BackendServer](https://github.com/Kura-Finance/BackendServer) | API: auth, fiat rails, Plaid, Dinari, Stripe, treasuries, E2EE | MIT |
+| [BackendServer](https://github.com/Kura-Finance/BackendServer) | API: auth, Bridge fiat rails, Plaid, Dinari, Stripe, treasuries, E2EE | MIT |
 | [mobile-app](https://github.com/Kura-Finance/mobile-app) | iOS / Android self-custody wallet (Expo) | MIT |
 | [WebClients](https://github.com/Kura-Finance/WebClients) | Web app: wallet, treasuries, TrackFi, Earn / Borrow | MIT |
 | [LandingPage](https://github.com/Kura-Finance/LandingPage) | Marketing site and blog (Nuxt 3) | All rights reserved |
@@ -370,7 +370,7 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 | 產品 | 功能 |
 |---|---|
 | [**Kura Wallet**](https://kura-finance.com/kura-wallet) | Base 上的 Safe 智慧帳戶（ERC-4337）。用 Privy 登入；透過 Pimlico 以 USDC 支付 gas；透過 LI.FI swap 和跨鏈；也能當 WalletConnect 錢包連 dApp |
-| [**Financial Account**](https://kura-finance.com/financial-account) | 透過受監管的法幣合作夥伴提供個人虛擬銀行帳戶（USD、EUR、GBP、MXN、BRL），入金自動換成穩定幣，也能出金回銀行 |
+| [**Financial Account**](https://kura-finance.com/financial-account) | 透過 [Bridge](https://bridge.xyz) 提供個人虛擬銀行帳戶（USD、EUR、GBP、MXN、BRL），入金自動換成穩定幣，也能出金回銀行 |
 | [**美股與 RWA**](https://kura-finance.com/us-stocks) | Dinari dShares tokenized 美股，在 Base 上結算，含 managed KYC |
 | [**Earn / Borrow**](https://kura-finance.com/earn) | Base 上的 Morpho vaults 和借貸市場 |
 | [**TrackFi**](https://kura-finance.com/trackfi) | 淨資產儀表板：銀行與券商（Plaid）、8 家中心化交易所、DeFi 部位，以 passkey 做端對端加密 |
@@ -382,7 +382,7 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 | 收入來源 | 方式 |
 |---|---|
 | 訂閱（Stripe） | **Basic** 免費 · **Pro** $12.99／月或 $129.99／年 · **Ultimate** $29.99／月或 $299.99／年 |
-| 出入金 | 在合作夥伴批發成本之上加收 0.25%，一律由伺服器端計算 |
+| 出入金 | 在 Bridge 批發成本之上加收 0.25%，一律由伺服器端計算 |
 | Swap 與跨鏈 | LI.FI integrator fee 0.25% |
 | Earn | Morpho fee-wrapper vault，收 10% performance fee |
 | 推薦計畫 | 依出入金事件結算的 cashback |
@@ -512,8 +512,8 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 **工程亮點**
 
 - **Zero-Access 端對端加密**：每次同步產生一把 AES-256-GCM session key，用 libsodium sealed box 封給使用者的 X25519 公鑰，用完即清除。私鑰由 passkey 的 **WebAuthn PRF** 輸出衍生出的金鑰包裝，伺服器無法解密使用者的財務資料。分三個 migration 階段上線，並設計了遺失 passkey 時的金鑰重設流程。
-- **法幣軌道**（最大的 domain，約 4,600 行）：KYC 與各支付軌道的 endorsement、虛擬帳戶、出金地址、Tron USDT → Base USDC 入金、外部銀行帳戶（US／IBAN／CLABE／PIX／GB）、款項追回。Webhook 有 RSA 簽章驗證、10 分鐘防重放、fail-closed 和事件去重；所有對外請求都帶 idempotency key。
-- **風控營運**：詐騙處理（追回、退款、停權）、對照合作方門檻的每月詐騙率監控，以及清理休眠帳戶以避免每個帳戶的月費。
+- **Bridge 法幣軌道**（最大的 domain，約 4,600 行）：KYC 與各支付軌道的 endorsement、虛擬帳戶、出金地址、Tron USDT → Base USDC 入金、外部銀行帳戶（US／IBAN／CLABE／PIX／GB）、款項追回。Webhook 有 RSA 簽章驗證、10 分鐘防重放、fail-closed 和事件去重；所有對外請求都帶 idempotency key。
+- **風控營運**：詐騙處理（追回、退款、停權）、對照 Bridge 門檻的每月詐騙率監控，以及清理休眠帳戶以避免每個帳戶的月費。
 - **模組化單體**：15 個可用 feature flag 開關的 domain，關閉的 domain 不做環境變數檢查、也不掛載路由。另有分級 rate limit 和依方案的同步次數配額。
 
 ### 7. 時間軸
@@ -547,7 +547,7 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 
 | Repository | 說明 | 授權 |
 |---|---|---|
-| [BackendServer](https://github.com/Kura-Finance/BackendServer) | API：驗證、法幣軌道、Plaid、Dinari、Stripe、金庫、E2EE | MIT |
+| [BackendServer](https://github.com/Kura-Finance/BackendServer) | API：驗證、Bridge 法幣軌道、Plaid、Dinari、Stripe、金庫、E2EE | MIT |
 | [mobile-app](https://github.com/Kura-Finance/mobile-app) | iOS／Android 自託管錢包（Expo） | MIT |
 | [WebClients](https://github.com/Kura-Finance/WebClients) | Web App：錢包、金庫、TrackFi、Earn／Borrow | MIT |
 | [LandingPage](https://github.com/Kura-Finance/LandingPage) | 官網與部落格（Nuxt 3） | All rights reserved |
