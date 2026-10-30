@@ -20,7 +20,7 @@
 **English** · [中文](#中文)
 
 > [!NOTE]
-> **Kura Finance LLC has wound down operations (2026).** The product code is published under the MIT license (© Prism Capital LLC) as a reference implementation. Existing users can export their wallet keys through [Privy](https://home.privy.io). Forks need their own Bridge, Dinari and Plaid contracts, licenses and KYC programs.
+> **Kura Finance LLC has wound down operations (2026).** The product code is published under the MIT license (© Rick Weng) as a reference implementation. Existing users can export their wallet keys through [Privy](https://home.privy.io). Forks need their own Bridge, Dinari and Plaid contracts, licenses and KYC programs.
 
 ---
 
