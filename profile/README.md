@@ -5,6 +5,17 @@
 [![Website](https://img.shields.io/badge/Website-kura--finance.com-8B5CF6?style=for-the-badge)](https://kura-finance.com)
 [![Download](https://img.shields.io/badge/Download-App-3B82F6?style=for-the-badge)](https://kura-finance.com/download)
 [![Docs](https://img.shields.io/badge/Docs-Hub-00D9FF?style=for-the-badge)](https://kura-finance.com/docs)
+[![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=apple&logoColor=white)](https://apps.apple.com/us/app/kura-modern-usd-finance/id6779338000)
+[![Google Play](https://img.shields.io/badge/Google_Play-34A853?style=for-the-badge&logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.kurafinance.app)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/01.png" width="135" alt="Kura app screenshot 1">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/02.png" width="135" alt="Kura app screenshot 2">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/03.png" width="135" alt="Kura app screenshot 3">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/04.png" width="135" alt="Kura app screenshot 4">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/05.png" width="135" alt="Kura app screenshot 5">
+  <img src="https://raw.githubusercontent.com/Kura-Finance/mobile-app/main/assets/AppScreens/apple/English%20(en-US)/iPhones%20%206.9/06.png" width="135" alt="Kura app screenshot 6">
+</p>
 
 **English** · [中文](#中文)
 
@@ -24,6 +35,8 @@ Stop juggling a wallet, an exchange, a brokerage, a card, and a spreadsheet.
 | Wallet | Card | Trading | Tracking |
 |--------|------|---------|----------|
 | Self-custody smart wallet | Non-custodial Kura Card | Crypto, RWA & US stocks | TrackFi unified dashboard |
+
+**Get the app — Kura: Modern USD Finance:** [App Store](https://apps.apple.com/us/app/kura-modern-usd-finance/id6779338000) · [Google Play](https://play.google.com/store/apps/details?id=com.kurafinance.app)
 
 ### Trade crypto and US stocks from one wallet
 - Swap tokens on Base, bridge across chains
@@ -57,7 +70,8 @@ Kura was a consumer fintech super app built around one idea: **you keep custody 
 |---|---|
 | **Operating period** | April – September 2026 (≈ 5 months from first commit to wind-down) |
 | **Team** | Solo founder-engineer |
-| **Platforms** | iOS & Android app, web app, internal ops console, marketing site |
+| **Platforms** | iOS & Android app ("Kura: Modern USD Finance" on the App Store and Google Play), web app, internal ops console, marketing site |
+| **Infrastructure cost** | ≈ US$30/month on Google Cloud |
 | **Codebase** | ≈ 148K lines of TypeScript across 5 repositories |
 | **Users in KYC** | 249 onboarded · 68 approved · 18 funded |
 | **Gross deposits** | ≈ US$34K across USD, EUR, MXN and GBP · ≈ US$18.3K (54%) refunded |
@@ -186,7 +200,8 @@ Deposit lifecycle events: 54 converted and paid out to wallets · 21 held for re
 **Expenses**
 
 - **Wire-return fees** on refunded deposits exceeded the 381.32 USDC of ramp fees. **Net fiat-ramp revenue was negative.**
-- Fixed monthly fees for each open virtual account, plus cloud hosting (Google Cloud Run and Cloud SQL) and third-party API subscriptions. These are not itemized in this report.
+- **Cloud hosting** (Google Cloud Run and Cloud SQL): ≈ US$30/month.
+- Fixed monthly fees for each open virtual account and third-party API subscriptions are not itemized in this report.
 
 **Risk**: one fraud incident (≈ 992.5 USDC, 27 Jul 2026), traced on-chain and remediated. It led to the recall, suspension and fraud-rate monitoring tooling described below.
 
@@ -197,6 +212,7 @@ Deposit lifecycle events: 54 converted and paid out to wallets · 21 held for re
 | Production deploys | 519 (API 294 · web 216 · admin 9) |
 | API requests, Sep–Oct 2026 | ≈ 131K (web 24K · admin 12.7K) |
 | Database size | ≈ 90 MB (PostgreSQL) |
+| Cloud cost | ≈ US$30/month (3 Cloud Run services + Cloud SQL) |
 
 ### 6. Technology
 
@@ -302,6 +318,8 @@ Built by **Rick Weng** — [@rickwengdev](https://github.com/rickwengdev). Secur
 |------|------|------|------|
 | 自託管智慧錢包 | 非託管 Kura Card | 加密貨幣、RWA 與美股 | TrackFi 整合儀表板 |
 
+**下載 App：Kura: Modern USD Finance**：[App Store](https://apps.apple.com/us/app/kura-modern-usd-finance/id6779338000) · [Google Play](https://play.google.com/store/apps/details?id=com.kurafinance.app)
+
 ### 一個錢包交易加密貨幣和美股
 - 在 Base 上 swap 代幣、跨鏈轉帳
 - 投資 tokenized 現實世界資產和美股
@@ -334,7 +352,8 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 |---|---|
 | **營運期間** | 2026 年 4 月 – 9 月（從第一個 commit 到結束約 5 個月） |
 | **團隊** | 創辦人一人兼任工程 |
-| **平台** | iOS 和 Android App、Web App、內部營運後台、官網 |
+| **平台** | iOS 和 Android App（App Store 與 Google Play 上架名稱「Kura: Modern USD Finance」）、Web App、內部營運後台、官網 |
+| **基礎設施成本** | Google Cloud 每月約 US$30 |
 | **程式碼** | 5 個 repo，約 14.8 萬行 TypeScript |
 | **KYC 用戶** | 249 位進入 · 68 位通過 · 18 位實際入金 |
 | **入金總額（gross）** | 約 US$34K，涵蓋 USD、EUR、MXN、GBP · 其中約 US$18.3K（54%）退款 |
@@ -463,7 +482,8 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 **支出**
 
 - 退款入金產生的**電匯退件費（wire return fee）超過了 381.32 USDC 的出入金手續費收入**，**出入金淨營收為負數**。
-- 每個開立中的虛擬帳戶都有固定月費，另有雲端主機（Google Cloud Run、Cloud SQL）和第三方 API 訂閱費用。這些在本報告中沒有逐項列出。
+- **雲端主機**（Google Cloud Run、Cloud SQL）：每月約 US$30。
+- 每個開立中的虛擬帳戶的固定月費，以及第三方 API 訂閱費用，在本報告中沒有逐項列出。
 
 **風險**：發生過一次詐騙事件（約 992.5 USDC，2026-07-27），已完成鏈上追查和處理，之後建置了下方所列的追回、停權和詐騙率監控工具。
 
@@ -474,6 +494,7 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 | 正式部署次數 | 519（API 294 · Web 216 · Admin 9） |
 | API 請求數（2026 年 9–10 月） | 約 13.1 萬（Web 2.4 萬 · Admin 1.27 萬） |
 | 資料庫大小 | 約 90 MB（PostgreSQL） |
+| 雲端費用 | 每月約 US$30（3 個 Cloud Run 服務 + Cloud SQL） |
 
 ### 6. 技術
 
