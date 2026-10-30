@@ -253,7 +253,12 @@ flowchart LR
 ### 8. Why it stopped — lessons learned
 
 1. **Too broad, too early.** Wallet, card, stocks, DeFi, aggregation and business treasuries all shipped before a single wedge found product-market fit. The card alone went through three partner approaches without launching.
-2. **The ramp margin could not absorb returns.** Ramp fees earned 381.32 USDC on ≈ US$34K of gross deposits, but ≈ 54% of that money was sent back, and the wire-return fees on those refunds **wiped out all fiat-ramp revenue**. A thin percentage fee needs either volume or pass-through of return costs; Kura had neither.
+2. **The ramp margin could not absorb returns.** Ramp fees earned 381.32 USDC on ≈ US$34K of gross deposits, but ≈ 54% of that money was sent back, and the wire-return fees on those refunds **wiped out all fiat-ramp revenue**. And the return cost could not be passed on to users, for three structural reasons:
+   - **Fees are only collected on successful deposits.** The platform fee is deducted when a deposit converts to stablecoin. A returned deposit goes back to the sender in full and carries no fee field at all, so there is nothing to deduct from.
+   - **Non-custodial means no clawback.** Converted funds land in the user's own smart wallet, which the platform cannot debit. Operator-initiated returns (for example fraud recalls) had to be funded from the platform's own wallet.
+   - **The workarounds all cost something.** A flat per-wire fee or a higher minimum fee makes successful deposits subsidize failed ones, which does not work at a 54% refund rate. Restricting international wires cuts off the core user base in emerging markets. Holding deposits in custody until they clear breaks the non-custodial promise and raises licensing questions.
+
+   Lesson: when a business earns a thin percentage on money movement, model the cost of returns and failures from day one, and pick rails and markets where those costs are low.
 3. **Regulated money movement is an operations business.** KYC rejections (64 of 249), fraud-rate thresholds, recalls, refunds and per-account fees demand dedicated compliance capacity that a solo founder cannot sustain next to engineering.
 4. **Activation is the real funnel.** 249 KYC starts → 68 approved → 18 funded. Onboarding friction, not features, was the constraint.
 5. **The users were not the ones we designed for.** The product was built for US-style multi-asset users, but 81% of users came from Southeast Asia, Latin America and Africa, looking for USD and EUR receiving accounts. Only 2 were in the US. Cross-border wires into those accounts are the likely cause of the high refund rate.
@@ -505,7 +510,12 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 ### 8. 為什麼結束：學到的事
 
 1. **太廣、太早。** 錢包、卡片、美股、DeFi、帳戶聚合、企業金庫全部上線，卻沒有一個切入點先找到 product-market fit。光是卡片就換過三種合作方案，最後還是沒推出。
-2. **出入金的利潤扛不住退件。** 約 US$34K 的 gross 入金賺到 381.32 USDC 手續費，但其中約 54% 的錢被退回，這些退款產生的電匯退件費（wire return fee）**吃掉了全部的出入金營收**。薄利的百分比抽成，要嘛靠量撐，要嘛得把退件成本轉嫁給用戶，Kura 兩者都沒有。
+2. **出入金的利潤扛不住退件。** 約 US$34K 的 gross 入金賺到 381.32 USDC 手續費，但其中約 54% 的錢被退回，這些退款產生的電匯退件費（wire return fee）**吃掉了全部的出入金營收**。而且這筆退件成本在結構上無法轉嫁給用戶，原因有三：
+   - **手續費只能在入金成功時收取。** 平台手續費是在入金換成穩定幣時扣除的。被退回的入金會全額退給匯款人，紀錄裡根本沒有手續費欄位，沒有東西可以扣。
+   - **非託管就代表無法追回。** 換好的資金直接進用戶自己的智慧錢包，平台沒辦法從裡面扣款。由營運方發起的退款（例如詐騙追回）也只能用平台自己的錢包出錢。
+   - **每種替代方案都有代價。** 對每筆電匯收固定費或提高最低費用，等於讓成功的入金補貼失敗的入金，在 54% 的退款率下行不通。限制國際電匯，等於砍掉新興市場的核心客群。把入金先託管到確認不會退件，又違背非託管的承諾，還會牽涉牌照問題。
+
+   教訓：靠金流抽薄利的生意，從第一天就要把退件和失敗交易的成本算進模型，並選擇這類成本低的支付軌道和市場。
 3. **受監管的金流其實是營運生意。** KYC 被拒（249 位中 64 位）、詐騙率門檻、追回款項、退款、每個帳戶的月費，都需要專職的合規人力，一個人同時寫程式撐不住。
 4. **真正的漏斗是啟用率。** 249 人開始 KYC → 68 人通過 → 18 人實際入金。瓶頸是開戶摩擦，不是功能不夠。
 5. **實際用戶不是產品設計的對象。** 產品是照美國式多資產用戶設計的，但 81% 的用戶來自東南亞、拉丁美洲和非洲，要的是 USD 和 EUR 收款帳戶，美國用戶只有 2 位。匯進這些帳戶的跨境電匯，很可能就是退款率居高不下的原因。
