@@ -134,6 +134,8 @@ Deposit lifecycle events: 54 converted and paid out to wallets · 21 held for re
 
 **Payouts and crypto deposits**: 13 payout/deposit addresses; 6 completed transactions totaling 67.66 USDT + 11.50 USDC from 3 users.
 
+**Ramp unit economics**: wire-return fees on returned and refunded deposits exceeded the 0.25% ramp margin. **Net fiat-ramp revenue was zero or negative.**
+
 **Risk**: one fraud incident (≈ 992.5 USDC, 27 Jul 2026), traced on-chain and remediated. It led to the recall, suspension and fraud-rate monitoring tooling described below.
 
 **Infrastructure**
@@ -199,9 +201,10 @@ flowchart LR
 ### 8. Why it stopped — lessons learned
 
 1. **Too broad, too early.** Wallet, card, stocks, DeFi, aggregation and business treasuries all shipped before a single wedge found product-market fit. The card alone went through three partner approaches without launching.
-2. **Regulated money movement is an operations business.** KYC rejections (64 of 249), fraud-rate thresholds, recalls, refunds and per-account fees demand dedicated compliance capacity that a solo founder cannot sustain next to engineering.
-3. **Activation is the real funnel.** 249 KYC starts → 68 approved → 18 funded. Onboarding friction, not features, was the constraint.
-4. **What worked:** shipping speed (519 production deploys), a security architecture that holds up to scrutiny, and a clean, documented codebase that others can fork.
+2. **The ramp margin could not absorb returns.** A 0.25% margin on ≈ US$34K of gross deposits is at most ≈ US$85. Wire-return fees on returned and refunded deposits (21 refunded, 18 in flight) **wiped out all fiat-ramp revenue**. A thin percentage margin needs either volume or fee pass-through for returns; Kura had neither.
+3. **Regulated money movement is an operations business.** KYC rejections (64 of 249), fraud-rate thresholds, recalls, refunds and per-account fees demand dedicated compliance capacity that a solo founder cannot sustain next to engineering.
+4. **Activation is the real funnel.** 249 KYC starts → 68 approved → 18 funded. Onboarding friction, not features, was the constraint.
+5. **What worked:** shipping speed (519 production deploys), a security architecture that holds up to scrutiny, and a clean, documented codebase that others can fork.
 
 ### 9. Repositories
 
@@ -349,6 +352,8 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 
 **出金與加密貨幣入金**：13 個出金／入金地址；6 筆交易完成，合計 67.66 USDT + 11.50 USDC，來自 3 位用戶。
 
+**出入金單位經濟**：退回和退款入金產生的電匯退件費超過了 0.25% 的出入金利潤，**出入金淨營收為零或負數**。
+
 **風險**：發生過一次詐騙事件（約 992.5 USDC，2026-07-27），已完成鏈上追查和處理，之後建置了下方所列的追回、停權和詐騙率監控工具。
 
 **基礎設施**
@@ -394,9 +399,10 @@ Kura 是一個消費者金融超級 App，核心理念是**錢和資料都由使
 ### 8. 為什麼結束：學到的事
 
 1. **太廣、太早。** 錢包、卡片、美股、DeFi、帳戶聚合、企業金庫全部上線，卻沒有一個切入點先找到 product-market fit。光是卡片就換過三種合作方案，最後還是沒推出。
-2. **受監管的金流其實是營運生意。** KYC 被拒（249 位中 64 位）、詐騙率門檻、追回款項、退款、每個帳戶的月費，都需要專職的合規人力，一個人同時寫程式撐不住。
-3. **真正的漏斗是啟用率。** 249 人開始 KYC → 68 人通過 → 18 人實際入金。瓶頸是開戶摩擦，不是功能不夠。
-4. **做對的事：** 出貨速度（519 次正式部署）、經得起檢視的安全架構，以及文件齊全、別人可以直接 fork 的程式碼。
+2. **出入金的利潤扛不住退件。** 約 US$34K 的 gross 入金，以 0.25% 計算最多只賺約 US$85。退回和退款的入金（已退款 21 筆、處理中 18 筆）產生的電匯退件費（wire return fee）**吃掉了全部的出入金營收**。薄利的百分比抽成，要嘛靠量撐，要嘛得把退件費轉嫁給用戶，Kura 兩者都沒有。
+3. **受監管的金流其實是營運生意。** KYC 被拒（249 位中 64 位）、詐騙率門檻、追回款項、退款、每個帳戶的月費，都需要專職的合規人力，一個人同時寫程式撐不住。
+4. **真正的漏斗是啟用率。** 249 人開始 KYC → 68 人通過 → 18 人實際入金。瓶頸是開戶摩擦，不是功能不夠。
+5. **做對的事：** 出貨速度（519 次正式部署）、經得起檢視的安全架構，以及文件齊全、別人可以直接 fork 的程式碼。
 
 ### 9. Repositories
 
